@@ -5,7 +5,6 @@ namespace App\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,11 +17,13 @@ class AnimalController extends AbstractController
         [
             'id' => 1,
             'name' => 'reksio',
+            'biography' => 'alirtharth pira prhap thraeth pah paretp aert aerhtagvfaourg gawt ouagaeritgarefgi rg gr iag',
             'race' => 'dog'
         ],
         [
             'id' => 2,
             'name' => 'buro',
+            'biography' => 'akurfuar ratgaeriyargf lragf ilare lhgarlt arelth gaerl traelg relt raelth ',
             'race' => 'cat'
         ]
     ];
@@ -31,24 +32,24 @@ class AnimalController extends AbstractController
      * @Route("/", name="animal_list")
      */
     public function list(){
-        return new JsonResponse(self::ANIMALS);
+        return $this->json(self::ANIMALS);
     }
 
     /**
      * @Route("/{id}", name="animal_by_id", requirements={"id"="\d+"})
      */
     public function animalById($id){
-        return new JsonResponse(
+        return $this->json(
             self::ANIMALS[array_search($id, array_column(self::ANIMALS, 'id'))]
         );
     }
 
     /**
-     * @Route("/{race}", name="animal_by_race")
+     * @Route("/{name}", name="animal_by_name")
      */
-    public function animalByRace($race){
-        return new JsonResponse(
-            self::ANIMALS[array_search($race, array_column(self::ANIMALS, 'race'))]
+    public function animalByName($name){
+        return $this->json(
+            self::ANIMALS[array_search($name, array_column(self::ANIMALS, 'name'))]
         );
     }
 
