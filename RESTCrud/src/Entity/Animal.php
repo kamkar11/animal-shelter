@@ -30,14 +30,23 @@ class Animal
     private $biography;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Race", inversedBy="animals")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $race;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="animals")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $owner;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
 
     public function getName(): ?string
     {
@@ -63,15 +72,44 @@ class Animal
         return $this;
     }
 
-    public function getRace(): ?string
+    /**
+     * @return Race
+     */
+    public function getRace(): Race
     {
         return $this->race;
     }
 
-    public function setRace(string $race): self
+    /**
+     * @param Race $race
+     */
+    public function setRace(Race $race): self
     {
         $this->race = $race;
 
         return $this;
     }
+
+    /**
+     * @return User
+     */
+    public function getOwner(): User
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owner
+     */
+    public function setOwner(User $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+
+
+
+
 }
