@@ -6,7 +6,9 @@ namespace App\Controller;
 
 use App\Entity\Animal;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Serializer;
 
@@ -37,19 +39,15 @@ class AnimalController extends AbstractController
     /**
      * @Route("/{id}", name="animal_by_id", requirements={"id"="\d+"}, methods={"GET"})
      */
-    public function animalById($id){
-        return $this->json(
-            $this->getDoctrine()->getRepository(Animal::class)->find($id)
-        );
+    public function animalById(Animal $animal){
+        return $this->json($animal);
     }
 
     /**
      * @Route("/{name}", name="animal_by_name", methods={"GET"})
      */
-    public function animalByName($name){
-        return $this->json(
-            $this->getDoctrine()->getRepository(Animal::class)->findOneBy(['name' => $name])
-        );
+    public function animalByName(Animal $animal){
+        return $this->json($animal);
     }
 
     /**
@@ -67,6 +65,18 @@ class AnimalController extends AbstractController
        $em->flush();
 
        return $this->json($animal);
+    }
+
+    /**
+     * @Route("/{id}", name="animal_delete", methods={"DELETE"})
+     */
+    public function deleteAnimal(Animal $animal){
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($animal);
+        $em->flush();
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
 
